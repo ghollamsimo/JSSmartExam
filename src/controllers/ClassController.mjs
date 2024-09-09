@@ -6,7 +6,7 @@ class ClassController {
             if (err) {
                 return res.status(500).json({ message: "Error fetching classes" });
             }
-            res.status(200).json(data);
+            res.status(200).render('../views/pages/formateur/home' ,data);
         });
     }
 }
