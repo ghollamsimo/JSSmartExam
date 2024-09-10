@@ -5,11 +5,27 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>Document</title>
+    <title>Create Class</title>
 </head>
 <body>
 <%- include('../../components/navbar') %>
+
+<form action="/create/class" method="POST">
+    <input type="text" name="formateur_id" placeholder="Formateur ID">
+    <input type="text" name="etudiant_id" placeholder="Etudiant ID">
+    <input type="text" name="name" placeholder="Class Name">
+    <button type="submit">Submit</button>
+</form>
+
+<% data.forEach(classe => { %>
+    <li>
+        <%= classe.formateur_id %> - <%= classe.etudiant_id %> - <%= classe.name %>
+        <form method="POST" action="/delete/class">
+            <input type="hidden" name="id" value="<%= classe.classe_id %>">
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+<% }); %>
 
 </body>
 </html>
