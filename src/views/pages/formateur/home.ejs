@@ -2,30 +2,132 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Create Class</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .success {
+            color: green;
+            background-color: #e6ffe6;
+        }
+
+        .error {
+            color: red;
+            background-color: #ffe6e6;
+        }
+
+        .fromClass {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-button {
+            background-color: #ff4d4d;
+        }
+
+        .delete-button:hover {
+            background-color: #cc0000;
+        }
+    </style>
 </head>
 <body>
+
 <%- include('../../components/navbar') %>
 
-<form action="/create/class" method="POST">
-    <input type="text" name="formateur_id" placeholder="Formateur ID">
-    <input type="text" name="etudiant_id" placeholder="Etudiant ID">
-    <input type="text" name="name" placeholder="Class Name">
-    <button type="submit">Submit</button>
-</form>
+<div class="container">
+    <h1>Create Class</h1>
 
-<% data.forEach(classe => { %>
-    <li>
-        <%= classe.formateur_id %> - <%= classe.etudiant_id %> - <%= classe.name %>
-        <form method="POST" action="/delete/class">
-            <input type="hidden" name="id" value="<%= classe.classe_id %>">
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-<% }); %>
+    <% if (success) { %>
+        <p class="message success"><%= success %></p>
+    <% } %>
+    <% if (error) { %>
+        <p class="message error"><%= error %></p>
+    <% } %>
+
+    <form class="fromClass" action="/create/class" method="POST">
+        <input type="text" name="formateur_id" placeholder="Formateur ID" >
+        <select name="etudiant_id" id="etudiant_id" required>
+            <% students.forEach(student => { %>
+                <option value="<%= student.etudiant_id %>"><%= student.nom %></option>
+            <% }) %>
+        </select>
+        <input type="text" name="name" placeholder="Class Name" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <ul class="ul">
+        <% classes.forEach(classe => { %>
+            <li class="li">
+                <span><%= classe.formateur_id %> - <%= classe.name %></span>
+                <form method="POST" action="/delete/class" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= classe.classe_id %>">
+                    <button class="button delete-button" type="submit">Delete</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+</div>
 
 </body>
 </html>

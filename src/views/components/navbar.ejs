@@ -1,8 +1,13 @@
 <link rel="stylesheet" href="/style/navbar.css">
+<link rel="stylesheet" href="/style/successtoster.css">
 
-<div class="nav">
+<nav class="nav">
     <input type="checkbox" id="nav-check">
-    <div class="nav-header"></div>
+    <div class="nav-header">
+        <div class="nav-title">
+            Logo
+        </div>
+    </div>
     <div class="nav-btn">
         <label for="nav-check">
             <span></span>
@@ -11,11 +16,28 @@
         </label>
     </div>
 
-    <div class="nav-links">
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-        <a href="#">Link 4</a>
-        <a href="#">Link 5</a>
+    <ul class="nav-list">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li>
+            <div class="profile" id="profile"></div>
+        </li>
+    </ul>
+
+    <div id="opener" class="opner">
+        <div class="user-info user-info-dark">
+            <div>name</div>
+            <div class="font-medium truncate">ghollamsimo1@gmail.com</div>
+        </div>
+        <div class="menu-list menu-list-dark" aria-labelledby="dropdownUserAvatarButton">
+            <ul>
+            <li><a href="#" class="menu-list-item menu-list-item-dark">Settings</a></li>
+            </ul>
+        </div>
+        <div class="py-2">
+            <a href="#" class="signout-link signout-link-dark">Sign out</a>
+        </div>
     </div>
-</div>
+</nav>
+
+    <script src="/js/script.js"></script>
