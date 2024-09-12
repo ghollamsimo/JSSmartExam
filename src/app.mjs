@@ -15,6 +15,6 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/formateur', formateurRoutes);
+app.use('/', formateurRoutes);
 
 app.listen(PORT);

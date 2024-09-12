@@ -1,10 +1,10 @@
-// src/models/sousSujet.mjs
+// src/models/SousSujetModel.mjs
 import db from '../config/db.mjs';
 
-export class SousSujet {
+export class NiveauModel {
     static async findAll() {
         return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM soussujet', (error, results) => {
+            db.query('SELECT * FROM niveau', (error, results) => {
                 if (error) {
                     console.error('Error executing query:', error);
                     return reject(error);

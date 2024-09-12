@@ -1,20 +1,39 @@
-<form action="/formateur/questions" method="POST">
+<form action="/question" method="POST">
   <div>
     <label for="texte_question">Question</label>
-    <input type="texte_question" name="texte_question" id="texte_question" required>
+    <input type="text" name="texte_question" id="texte_question" required>
   </div>
 
   <div>
     <label for="difficulty">Niveau</label>
     <select name="difficulty" id="difficulty">
-      <option value="facile">Facile</option>
-      <option value="normal">Normal</option>
-      <option value="difficile">Difficile</option>
+      <option value="easy">Facile</option>
+      <option value="medium">Normal</option>
+      <option value="hard">Difficile</option>
     </select>
   </div>
 
   <div>
-    <label for="type_question	">Type de question</label>
+    <label for="sujet_id">Sujet</label>
+    <select name="sujet_id" id="sujet">
+      <% sujet.forEach(s => { %>
+        <option value="<%= s.sujet_id %>"><%= s.intitule %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <div>
+    <label for="sous_sujet_id">Sous Sujet</label>
+    <select name="sous_sujet_id" id="sujet">
+      <% soussujet.forEach(s => { %>
+        <option value="<%= s.sous_sujet_id %>"><%= s.intitule %></option>
+      <% }) %>
+    </select>
+  </div>
+
+
+  <div>
+    <label for="type_question">Type de question</label>
     <select name="type_question" id="type_question" required>
       <option value="choix_unique">Choix Unique</option>
       <option value="choix_multiple">Choix Multiple</option>
@@ -26,33 +45,6 @@
     <input type="number" name="points" id="points" min="1" required>
   </div>
 
-
-  <div>
-    <label for="sujet">Sujet</label>
-    <select name="sujet_id" id="sujet">
-      <% if (sujets && sujets.length > 0) { %>
-        <% sujets.forEach(sujet => { %>
-          <option value="<%= sujet.sujet_id %>"><%= sujet.intitule %></option>
-        <% }); %>
-      <% } else { %>
-        <option value="">Aucun sujet disponible</option>
-      <% } %>
-    </select>
-  </div>
-
-  <div>
-    <label for="sousSujet">Sous-sujet</label>
-    <select name="sous_sujet_id" id="sousSujet">
-      <% if (sousSujets && sousSujets.length > 0) { %>
-        <% sousSujets.forEach(sousSujet => { %>
-          <option value="<%= sousSujet.sous_sujet_id %>"><%= sousSujet.intitule %></option>
-        <% }); %>
-      <% } else { %>
-        <option value="">Aucun sous-sujet disponible</option>
-      <% } %>
-    </select>
-  </div>
-
   <div id="reponses">
     <div class="reponse">
       <label for="reponse1">Réponse 1</label>
@@ -61,9 +53,27 @@
     </div>
   </div>
 
+
+
   <button type="button" id="add-reponse">Ajouter une réponse</button>
   <button type="submit">Créer Question</button>
 </form>
+
+<% questions.forEach(question => { %>
+  <ul>
+    <li>Question: <%= question.texte_question %></li>
+    <li>Type: <%= question.type_question %></li>
+    <li>Points: <%= question.points %></li>
+    <li>Difficulty: <%= question.difficulty %></li>
+    <li>Sujet: <%= question.sujet_intitule %></li>
+    <li>Sous-Sujet: <%= question.sous_sujet_intitule %></li>
+  </ul>
+<% }) %>
+
+
+
+
+
 
 <script>
   const reponsesDiv = document.getElementById('reponses');

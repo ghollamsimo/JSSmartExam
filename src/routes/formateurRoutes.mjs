@@ -1,10 +1,9 @@
 import express from 'express';
-import { FormateurController } from '../controllers/FormateurController.mjs';
+import QuestionController from '../controllers/QuestionController.mjs';
 
 const router = express.Router();
 
-router.get('/questions/create', FormateurController.renderCreateQuestionForm);
-router.post('/questions', FormateurController.createQuestion);
-router.get('/questions', FormateurController.listQuestions);
+router.get('/questions', QuestionController.getAllQuestion);
+router.post('/question', QuestionController.CreateQuestion);
 
 export default router;
