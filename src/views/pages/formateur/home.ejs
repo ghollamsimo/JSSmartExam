@@ -5,91 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Create Class</title>
-    <style>
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        .message {
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .success {
-            color: green;
-            background-color: #e6ffe6;
-        }
-
-        .error {
-            color: red;
-            background-color: #ffe6e6;
-        }
-
-        .fromClass {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        input[type="text"], select {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .li {
-            background-color: #f9f9f9;
-            margin-bottom: 10px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .delete-button {
-            background-color: #ff4d4d;
-        }
-
-        .delete-button:hover {
-            background-color: #cc0000;
-        }
-    </style>
+    <link rel="stylesheet" href="/style/classes.css">
 </head>
 <body>
 
@@ -105,16 +21,26 @@
         <p class="message error"><%= error %></p>
     <% } %>
 
-    <form class="fromClass" action="/create/class" method="POST">
-        <input type="text" name="formateur_id" placeholder="Formateur ID" >
-        <select name="etudiant_id" id="etudiant_id" required>
-            <% students.forEach(student => { %>
-                <option value="<%= student.etudiant_id %>"><%= student.nom %></option>
-            <% }) %>
-        </select>
+    <form class="fromClass" action="/create/class" method="POST" onsubmit="convertToJSON()">
+        <input type="text" name="formateur_id" placeholder="Formateur ID" required>
+
+        <div class="add-student">
+            <div class="student-checkboxes">
+                <% students.forEach(student => { %>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="etudiant_id[]" value="<%= student.etudiant_id %>">
+                        <span class="custom-checkbox"></span>
+                        <%= student.nom %>
+                    </label>
+                <% }) %>
+            </div>
+        </div>
+
         <input type="text" name="name" placeholder="Class Name" required>
-        <button type="submit">Submit</button>
+        <button class="submit-classes" type="submit">Submit</button>
     </form>
+
+
 
     <ul class="ul">
         <% classes.forEach(classe => { %>
@@ -124,10 +50,84 @@
                     <input type="hidden" name="id" value="<%= classe.classe_id %>">
                     <button class="button delete-button" type="submit">Delete</button>
                 </form>
+                    <button id="open-popup">view</button>
             </li>
         <% }); %>
     </ul>
+
 </div>
 
+
+
+
+<div id="popup" class="hidden">
+    <div class="settings-window">
+        <div class="header">
+            <h1>Settings</h1>
+            <button class="close-button"
+                    id="close-popup">&times;</button>
+        </div>
+
+        <div class="settings-body">
+            <nav class="sidebar">
+                <ul>
+                    <li><a href="#general"
+                           class="active">General</a></li>
+
+                </ul>
+            </nav>
+
+            <div class="content">
+                <div id="general" class="content-section">
+                    <p>General settings go here...</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("open-popup").addEventListener("click", function() {
+        document.getElementById("popup").classList.toggle("hidden");
+        addOverlay(); // Call function to add overlay
+    });
+
+    document.getElementById("close-popup").addEventListener("click", function() {
+        document.getElementById("popup").classList.add("hidden");
+        removeOverlay(); // Call function to remove overlay
+    });
+
+    const links = document.querySelectorAll(".sidebar ul li a");
+
+    links.forEach(link => {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            // Toggle active class on sidebar links
+            links.forEach(link => link.classList.remove("active"));
+            this.classList.add("active");
+
+            // Show the relevant section
+            const targetSection = document.querySelector(this.getAttribute("href"));
+            document.querySelectorAll(".content-section").forEach(section => section.classList.add("hidden"));
+            targetSection.classList.remove("hidden");
+        });
+    });
+
+    function addOverlay() {
+        // Create overlay element
+        const overlay = document.createElement("div");
+        overlay.classList.add("overlay"); // Add class for styling
+        document.body.appendChild(overlay); // Append overlay to the body
+    }
+
+    function removeOverlay() {
+        const overlay = document.querySelector(".overlay");
+        if (overlay) {
+            overlay.parentNode.removeChild(overlay); // Remove overlay if exists
+        }
+    }
+</script>
 </body>
 </html>

@@ -6,9 +6,13 @@ class ClassRequest {
         if (!formateur_id || typeof formateur_id !== 'string') {
             errors.push('Invalid formateur_id');
         }
-        if (!etudiant_id || typeof etudiant_id !== 'string') {
-            errors.push('Invalid etudiant_id');
+
+        try {
+            JSON.parse(etudiant_id);
+        } catch (e) {
+            errors.push('Invalid etudiant_id (should be a valid JSON array or object)');
         }
+
         if (!name || typeof name !== 'string') {
             errors.push('Invalid name');
         }

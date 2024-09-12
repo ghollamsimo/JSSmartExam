@@ -14,9 +14,12 @@ class ClassModel {
         if (errors.length > 0) {
             return callback(new Error(`Validation failed: ${errors.join(', ')}`), null);
         }
+
         const { formateur_id, etudiant_id, name } = data;
+        let etudiantIdJson = JSON.parse(etudiant_id);
+
         const sql = "INSERT INTO classes (formateur_id, etudiant_id, name) VALUES (?, ?, ?)";
-        db.query(sql, [formateur_id, etudiant_id, name], (err, result) => {
+        db.query(sql, [formateur_id, JSON.stringify(etudiantIdJson), name], (err, result) => {
             if (err) {
                 return callback(err, null);
             }

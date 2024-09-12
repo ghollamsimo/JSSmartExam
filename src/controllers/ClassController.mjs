@@ -22,14 +22,17 @@ class ClassController {
     }
 
     static async CreateClass(req, res) {
-        const classData = req.body;
+        const classData = {
+            formateur_id: req.body.formateur_id,
+            etudiant_id: req.body.etudiant_id_json,
+            name: req.body.name
+        };
 
         ClassModel.store(classData, (err, results) => {
             if (err) {
-                res.redirect('/classes?error=Error creating class');
-            } else {
-                res.redirect('/classes?success=Class created successfully');
+                return res.redirect('/classes?error=Error creating class');
             }
+            res.redirect('/classes?success=Class created successfully');
         });
     }
 
