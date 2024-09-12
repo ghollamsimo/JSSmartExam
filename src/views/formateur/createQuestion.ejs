@@ -1,0 +1,87 @@
+<form action="/formateur/questions" method="POST">
+  <div>
+    <label for="texte_question">Question</label>
+    <input type="texte_question" name="texte_question" id="texte_question" required>
+  </div>
+
+  <div>
+    <label for="difficulty">Niveau</label>
+    <select name="difficulty" id="difficulty">
+      <option value="facile">Facile</option>
+      <option value="normal">Normal</option>
+      <option value="difficile">Difficile</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="type_question	">Type de question</label>
+    <select name="type_question" id="type_question" required>
+      <option value="choix_unique">Choix Unique</option>
+      <option value="choix_multiple">Choix Multiple</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="points">Points</label>
+    <input type="number" name="points" id="points" min="1" required>
+  </div>
+
+
+  <div>
+    <label for="sujet">Sujet</label>
+    <select name="sujet_id" id="sujet">
+      <% if (sujets && sujets.length > 0) { %>
+        <% sujets.forEach(sujet => { %>
+          <option value="<%= sujet.sujet_id %>"><%= sujet.intitule %></option>
+        <% }); %>
+      <% } else { %>
+        <option value="">Aucun sujet disponible</option>
+      <% } %>
+    </select>
+  </div>
+
+  <div>
+    <label for="sousSujet">Sous-sujet</label>
+    <select name="sous_sujet_id" id="sousSujet">
+      <% if (sousSujets && sousSujets.length > 0) { %>
+        <% sousSujets.forEach(sousSujet => { %>
+          <option value="<%= sousSujet.sous_sujet_id %>"><%= sousSujet.intitule %></option>
+        <% }); %>
+      <% } else { %>
+        <option value="">Aucun sous-sujet disponible</option>
+      <% } %>
+    </select>
+  </div>
+
+  <div id="reponses">
+    <div class="reponse">
+      <label for="reponse1">Réponse 1</label>
+      <input type="text" name="reponses[0][content]" required>
+      <input type="checkbox" name="reponses[0][isCorrect]"> Correcte
+    </div>
+  </div>
+
+  <button type="button" id="add-reponse">Ajouter une réponse</button>
+  <button type="submit">Créer Question</button>
+</form>
+
+<script>
+  const reponsesDiv = document.getElementById('reponses');
+  const addReponseBtn = document.getElementById('add-reponse');
+  let reponseCount = 1;
+
+  addReponseBtn.addEventListener('click', () => {
+    reponseCount++;
+
+    const newReponseDiv = document.createElement('div');
+    newReponseDiv.classList.add('reponse');
+
+    newReponseDiv.innerHTML = `
+      <label for="reponse${reponseCount}">Réponse ${reponseCount}</label>
+      <input type="text" name="reponses[${reponseCount - 1}][content]" required>
+      <input type="checkbox" name="reponses[${reponseCount - 1}][isCorrect]"> Correcte
+    `;
+
+    reponsesDiv.appendChild(newReponseDiv);
+  });
+</script>
