@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Tests</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Tests Passed</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Test ID</th>
+                <th>Score</th>
+                <th>Attempt Number</th>
+                <th>Final Result</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% tests.forEach(test => { %>
+                <tr>
+                    <td><%= test.test_id %></td>
+                    <td><%= test.score_obtenu %></td>
+                    <td><%= test.tentative_numero %></td>
+                    <td><%= test.resultat_final %></td>
+                    <td><%= test.date_passage %></td>
+                    
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

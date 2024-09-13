@@ -30,7 +30,7 @@ class FormateurController {
                     return res.status(500).json({ message: "Internal server error" });
                 }
 
-                console.log("Password match:", isMatch); // Log comparison result
+                console.log("Password match:", isMatch); 
 
                 if (!isMatch) {
                     return res.status(401).json({ message: "Invalid credentials" });

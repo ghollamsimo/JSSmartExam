@@ -1,5 +1,4 @@
 import express from 'express';
-import session from 'express-session';
 import router from './routes/router.mjs';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -22,11 +21,6 @@ app.set('views', path.join(__dirname, 'views'));
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
-    resave: false,
-    saveUninitialized: true
-}));
 
 // Routes
 app.use('/', router);
@@ -34,5 +28,5 @@ app.use('/', router);
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
