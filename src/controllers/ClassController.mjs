@@ -12,7 +12,7 @@ class ClassController {
                 classIndex(),
                 studentIndex()
             ]);
-            res.status(200).render('../views/pages/formateur/home', { classes: classesData,
+            res.status(200).render('../views/formateur/home', { classes: classesData,
                 students: studentsData,
                 success: req.query.success,
                 error: req.query.error });

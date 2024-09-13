@@ -1,5 +1,3 @@
-import FormateurModel from '../models/FormateurModel.mjs'
+export class FormateurController {
 
-class FormateurController{
-    //put your own code here
 }

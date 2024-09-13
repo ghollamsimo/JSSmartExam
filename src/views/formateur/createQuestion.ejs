@@ -1,0 +1,97 @@
+<form action="/question" method="POST">
+  <div>
+    <label for="texte_question">Question</label>
+    <input type="text" name="texte_question" id="texte_question" required>
+  </div>
+
+  <div>
+    <label for="difficulty">Niveau</label>
+    <select name="difficulty" id="difficulty">
+      <option value="easy">Facile</option>
+      <option value="medium">Normal</option>
+      <option value="hard">Difficile</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="sujet_id">Sujet</label>
+    <select name="sujet_id" id="sujet">
+      <% sujet.forEach(s => { %>
+        <option value="<%= s.sujet_id %>"><%= s.intitule %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <div>
+    <label for="sous_sujet_id">Sous Sujet</label>
+    <select name="sous_sujet_id" id="sujet">
+      <% soussujet.forEach(s => { %>
+        <option value="<%= s.sous_sujet_id %>"><%= s.intitule %></option>
+      <% }) %>
+    </select>
+  </div>
+
+
+  <div>
+    <label for="type_question">Type de question</label>
+    <select name="type_question" id="type_question" required>
+      <option value="choix_unique">Choix Unique</option>
+      <option value="choix_multiple">Choix Multiple</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="points">Points</label>
+    <input type="number" name="points" id="points" min="1" required>
+  </div>
+
+  <div id="reponses">
+    <div class="reponse">
+      <label for="reponse1">Réponse 1</label>
+      <input type="text" name="reponses[0][content]" required>
+      <input type="checkbox" name="reponses[0][isCorrect]"> Correcte
+    </div>
+  </div>
+
+
+
+  <button type="button" id="add-reponse">Ajouter une réponse</button>
+  <button type="submit">Créer Question</button>
+</form>
+
+<% questions.forEach(question => { %>
+  <ul>
+    <li>Question: <%= question.texte_question %></li>
+    <li>Type: <%= question.type_question %></li>
+    <li>Points: <%= question.points %></li>
+    <li>Difficulty: <%= question.difficulty %></li>
+    <li>Sujet: <%= question.sujet_intitule %></li>
+    <li>Sous-Sujet: <%= question.sous_sujet_intitule %></li>
+  </ul>
+<% }) %>
+
+
+
+
+
+
+<script>
+  const reponsesDiv = document.getElementById('reponses');
+  const addReponseBtn = document.getElementById('add-reponse');
+  let reponseCount = 1;
+
+  addReponseBtn.addEventListener('click', () => {
+    reponseCount++;
+
+    const newReponseDiv = document.createElement('div');
+    newReponseDiv.classList.add('reponse');
+
+    newReponseDiv.innerHTML = `
+      <label for="reponse${reponseCount}">Réponse ${reponseCount}</label>
+      <input type="text" name="reponses[${reponseCount - 1}][content]" required>
+      <input type="checkbox" name="reponses[${reponseCount - 1}][isCorrect]"> Correcte
+    `;
+
+    reponsesDiv.appendChild(newReponseDiv);
+  });
+</script>

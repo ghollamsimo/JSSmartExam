@@ -9,7 +9,57 @@
 </head>
 <body>
 
-<%- include('../../components/navbar') %>
+<%- include('../components/navbar') %>
+
+
+
+<div class="container">
+    <h1>Creat Student account</h1>
+
+    <% if (success) { %>
+        <p class="message success"><%= success %></p>
+    <% } %>
+    <% if (error) { %>
+        <p class="message error"><%= error %></p>
+    <% } %>
+
+    <form class="fromClass" action="/create/class" method="POST" onsubmit="convertToJSON()">
+        <input type="text" name="formateur_id" placeholder="Formateur ID" required>
+
+        <div class="add-student">
+            <div class="student-checkboxes">
+                <% students.forEach(student => { %>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="etudiant_id[]" value="<%= student.etudiant_id %>">
+                        <span class="custom-checkbox"></span>
+                        <%= student.nom %>
+                    </label>
+                <% }) %>
+            </div>
+        </div>
+
+        <input type="text" name="name" placeholder="Class Name" required>
+        <button class="submit-classes" type="submit">Submit</button>
+    </form>
+
+
+
+    <ul class="ul">
+        <% classes.forEach(classe => { %>
+            <li class="li">
+                <span><%= classe.formateur_id %> - <%= classe.name %></span>
+                <form method="POST" action="/delete/class" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= classe.classe_id %>">
+                    <button class="button delete-button" type="submit">Delete</button>
+                </form>
+                    <button id="open-popup">view</button>
+            </li>
+        <% }); %>
+    </ul>
+
+</div>
+
+
 
 <div class="container">
     <h1>Create Class</h1>

@@ -1,4 +1,4 @@
-import db from '../config/settings.mjs'
+import db from '../config/db.mjs'
 import ClassRequest from "../requests/ClassRequest.mjs";
 
 class ClassModel {
