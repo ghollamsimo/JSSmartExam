@@ -1,0 +1,10 @@
+<form method="POST" action="/test">
+    <input type="text" name="formateur_id">
+    <input type="text" name="test_name" placeholder="Test Name">
+    <select name="questions" multiple>
+        <% questions.forEach(question => { %>
+        <option value="<%= question.question_id %>"><%= question.texte_question %></option>
+        <% }) %>
+    </select>
+    <button type="submit">Create Test</button>
+</form>

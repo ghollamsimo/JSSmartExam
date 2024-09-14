@@ -1,63 +1,68 @@
 <form action="/question" method="POST">
-  <div>
-    <label for="texte_question">Question</label>
-    <input type="text" name="texte_question" id="texte_question" required>
-  </div>
+  <div id="questions-container">
+    <div class="question" id="question_0">
+      <div>
+        <label for="texte_question_0">Question</label>
+        <input type="text" name="questions[0][texte_question]" id="texte_question_0" required>
+      </div>
 
-  <div>
-    <label for="difficulty">Niveau</label>
-    <select name="difficulty" id="difficulty">
-      <option value="easy">Facile</option>
-      <option value="medium">Normal</option>
-      <option value="hard">Difficile</option>
-    </select>
-  </div>
+      <div>
+        <label for="difficulty_0">Niveau</label>
+        <select name="questions[0][difficulty]" id="difficulty_0">
+          <option value="easy">Facile</option>
+          <option value="medium">Normal</option>
+          <option value="hard">Difficile</option>
+        </select>
+      </div>
 
-  <div>
-    <label for="sujet_id">Sujet</label>
-    <select name="sujet_id" id="sujet">
-      <% sujet.forEach(s => { %>
-        <option value="<%= s.sujet_id %>"><%= s.intitule %></option>
-      <% }) %>
-    </select>
-  </div>
+      <div>
+        <label for="sujet_id_0">Sujet</label>
+        <select name="questions[0][sujet_id]" id="sujet_id_0">
+          <% sujet.forEach(s => { %>
+            <option value="<%= s.sujet_id %>"><%= s.intitule %></option>
+          <% }) %>
+        </select>
+      </div>
 
-  <div>
-    <label for="sous_sujet_id">Sous Sujet</label>
-    <select name="sous_sujet_id" id="sujet">
-      <% soussujet.forEach(s => { %>
-        <option value="<%= s.sous_sujet_id %>"><%= s.intitule %></option>
-      <% }) %>
-    </select>
-  </div>
+      <div>
+        <label for="sous_sujet_id_0">Sous Sujet</label>
+        <select name="questions[0][sous_sujet_id]" id="sous_sujet_id_0">
+          <% soussujet.forEach(s => { %>
+            <option value="<%= s.sous_sujet_id %>"><%= s.intitule %></option>
+          <% }) %>
+        </select>
+      </div>
 
+      <div>
+        <label for="type_question_0">Type de question</label>
+        <select name="questions[0][type_question]" id="type_question_0" required>
+          <option value="choix_unique">Choix Unique</option>
+          <option value="choix_multiple">Choix Multiple</option>
+        </select>
+      </div>
 
-  <div>
-    <label for="type_question">Type de question</label>
-    <select name="type_question" id="type_question" required>
-      <option value="choix_unique">Choix Unique</option>
-      <option value="choix_multiple">Choix Multiple</option>
-    </select>
-  </div>
+      <div>
+        <label for="points_0">Points</label>
+        <input type="number" name="questions[0][points]" id="points_0" min="1" required>
+      </div>
 
-  <div>
-    <label for="points">Points</label>
-    <input type="number" name="points" id="points" min="1" required>
-  </div>
+      <!-- Responses for the first question -->
+      <div id="reponses_0" class="reponses-container">
+        <div class="reponse">
+          <label for="reponse_0_0">Réponse 1</label>
+          <input type="text" name="questions[0][reponses][0][content]" required>
+          <input type="checkbox" name="questions[0][reponses][0][isCorrect]"> Correcte
+        </div>
+      </div>
 
-  <div id="reponses">
-    <div class="reponse">
-      <label for="reponse1">Réponse 1</label>
-      <input type="text" name="reponses[0][content]" required>
-      <input type="checkbox" name="reponses[0][isCorrect]"> Correcte
+      <button type="button" class="add-reponse" data-question-id="0">Ajouter une réponse</button>
     </div>
   </div>
 
-
-
-  <button type="button" id="add-reponse">Ajouter une réponse</button>
+  <button type="button" id="add-question">Ajouter une question</button>
   <button type="submit">Créer Question</button>
 </form>
+
 
 <% questions.forEach(question => { %>
   <ul>
@@ -76,22 +81,99 @@
 
 
 <script>
-  const reponsesDiv = document.getElementById('reponses');
-  const addReponseBtn = document.getElementById('add-reponse');
-  let reponseCount = 1;
+  const questionsContainer = document.getElementById('questions-container');
+  const addQuestionBtn = document.getElementById('add-question');
+  let questionIndex = 1;
 
-  addReponseBtn.addEventListener('click', () => {
-    reponseCount++;
+  addQuestionBtn.addEventListener('click', () => {
+    const newQuestionDiv = document.createElement('div');
+    newQuestionDiv.classList.add('question');
+    newQuestionDiv.id = `question_${questionIndex}`;
+
+    newQuestionDiv.innerHTML = `
+    <div>
+      <label for="texte_question_${questionIndex}">Question</label>
+      <input type="text" name="questions[${questionIndex}][texte_question]" id="texte_question_${questionIndex}" required>
+    </div>
+
+    <div>
+      <label for="difficulty_${questionIndex}">Niveau</label>
+      <select name="questions[${questionIndex}][difficulty]" id="difficulty_${questionIndex}">
+        <option value="easy">Facile</option>
+        <option value="medium">Normal</option>
+        <option value="hard">Difficile</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="sujet_id_${questionIndex}">Sujet</label>
+      <select name="questions[${questionIndex}][sujet_id]" id="sujet_${questionIndex}">
+        <% sujet.forEach(s => { %>
+          <option value="<%= s.sujet_id %>"><%= s.intitule %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div>
+      <label for="sous_sujet_id_${questionIndex}">Sous Sujet</label>
+      <select name="questions[${questionIndex}][sous_sujet_id]" id="sous_sujet_${questionIndex}">
+        <% soussujet.forEach(s => { %>
+          <option value="<%= s.sous_sujet_id %>"><%= s.intitule %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div>
+      <label for="type_question_${questionIndex}">Type de question</label>
+      <select name="questions[${questionIndex}][type_question]" id="type_question_${questionIndex}" required>
+        <option value="choix_unique">Choix Unique</option>
+        <option value="choix_multiple">Choix Multiple</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="points_${questionIndex}">Points</label>
+      <input type="number" name="questions[${questionIndex}][points]" id="points_${questionIndex}" min="1" required>
+    </div>
+
+    <!-- Responses for this new question -->
+    <div id="reponses_${questionIndex}" class="reponses-container">
+      <div class="reponse">
+        <label for="reponse_${questionIndex}_0">Réponse 1</label>
+        <input type="text" name="questions[${questionIndex}][reponses][0][content]" required>
+        <input type="checkbox" name="questions[${questionIndex}][reponses][0][isCorrect]"> Correcte
+      </div>
+    </div>
+
+    <button type="button" class="add-reponse" data-question-id="${questionIndex}">Ajouter une réponse</button>
+  `;
+
+    questionsContainer.appendChild(newQuestionDiv);
+
+    const addReponseBtn = newQuestionDiv.querySelector('.add-reponse');
+    addReponseBtn.addEventListener('click', addReponse);
+
+    questionIndex++;
+  });
+
+  function addReponse(event) {
+    const questionId = event.target.getAttribute('data-question-id');
+    const reponsesContainer = document.getElementById(`reponses_${questionId}`);
+    const reponseIndex = reponsesContainer.querySelectorAll('.reponse').length; // Count the current responses
 
     const newReponseDiv = document.createElement('div');
     newReponseDiv.classList.add('reponse');
 
     newReponseDiv.innerHTML = `
-      <label for="reponse${reponseCount}">Réponse ${reponseCount}</label>
-      <input type="text" name="reponses[${reponseCount - 1}][content]" required>
-      <input type="checkbox" name="reponses[${reponseCount - 1}][isCorrect]"> Correcte
-    `;
+    <label for="reponse_${questionId}_${reponseIndex}">Réponse ${reponseIndex + 1}</label>
+    <input type="text" name="questions[${questionId}][reponses][${reponseIndex}][content]" required>
+    <input type="checkbox" name="questions[${questionId}][reponses][${reponseIndex}][isCorrect]"> Correcte
+  `;
 
-    reponsesDiv.appendChild(newReponseDiv);
-  });
+    reponsesContainer.appendChild(newReponseDiv);
+  }
+
+  const addReponseBtn = document.querySelector('.add-reponse');
+  addReponseBtn.addEventListener('click', addReponse);
+
 </script>
