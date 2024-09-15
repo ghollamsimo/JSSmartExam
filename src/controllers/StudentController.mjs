@@ -36,7 +36,9 @@ class StudentController{
                     to: email,
                     subject: "Bienvenue à l'école",
                     text: `Bonjour ${prenom}, bienvenue dans notre école !`,
-                    html: `<h1>Bonjour ${prenom}</h1><p>Bienvenue dans notre école ! Nous sommes ravis de vous accueillir.</p>`
+                    html: `<h1>Bonjour ${prenom} ${nom}</h1>
+                           <p>Bienvenue à notre école ! Veuillez trouver votre email adresse  : <strong>${email}</strong>.</p>
+                           <p>Cordialement,<br>L'équipe de l'école</p>`
                 });
                 console.log(`Email envoyé à ${email}`);
             } catch (emailErr) {
