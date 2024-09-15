@@ -1,7 +1,44 @@
 <link rel="stylesheet" href="/style/sponsore.css">
 
 <section class="sponsor-section">
-    <div>
-        <img src="/assets/Youcode.png">
+    <div class="animation">
+        <p>YOUCODE</p>
+        <p>SIMPLON</p>
+        <P>UM6P</P>
+        <P>OCP</P>
     </div>
 </section>
+<script>
+// Select the animation container
+// Select the animation container
+const animationContainer = document.querySelector('.sponsor-section .animation');
+
+// Duplicate the content until it's wide enough to fill the viewport more than 5 times
+const screenWidth = window.innerWidth;
+let containerWidth = animationContainer.scrollWidth;
+
+// Clone content to fill the viewport more than 5 times for smooth infinite scrolling
+const duplicateCount = 5; // Number of times to duplicate the content
+while (containerWidth < screenWidth * duplicateCount) {
+    animationContainer.innerHTML += animationContainer.innerHTML;
+    containerWidth = animationContainer.scrollWidth;
+}
+
+// Set initial position for the animation
+let position = 0;
+
+// Function to animate the text from right to left
+function animate() {
+    position--; // Move left by 1 pixel
+    // Reset the position when the entire content has scrolled out of view
+    if (position <= -containerWidth / 2) {
+        position = 0;
+    }
+    animationContainer.style.transform = `translateX(${position}px)`; // Apply the translation
+    requestAnimationFrame(animate); // Continue the animation
+}
+
+// Start the animation
+animate();
+
+</script>

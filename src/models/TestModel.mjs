@@ -1,6 +1,13 @@
 import db from '../config/db.mjs';
 
 class TestModel {
+    static index(callback){
+        const sql = 'SELECT * FROM test'
+        db.query(sql, (err, result) =>{
+            if (err) callback(err, null)
+            callback(null, result)
+        })
+    }
     static showQuestion(callback){
         const sql = 'SELECT * FROM question'
 

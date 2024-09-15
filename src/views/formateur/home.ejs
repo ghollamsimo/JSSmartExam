@@ -10,6 +10,49 @@
 <body>
 
 <%- include('../components/navbar') %>
+<<<<<<< HEAD
+=======
+<div class="container">
+    <h1>Create Student</h1>
+
+    <% if (success) { %>
+        <p class="message success"><%= success %></p>
+    <% } %>
+    <% if (error) { %>
+        <p class="message error"><%= error %></p>
+    <% } %>
+
+    <form class="formStudent" action="/create/student" method="POST">
+        <input type="text" name="nom" placeholder="Nom" required>
+        <input type="text" name="prenom" placeholder="Prénom" required>
+        <input type="date" name="date_naissance" placeholder="Date de Naissance" required>
+        <input type="text" name="adresse" placeholder="Adresse" required>
+        <input type="date" name="date_inscription" placeholder="Date d'inscription" required>
+        <input type="email" name="email" placeholder="email" required>
+        <button class="submit-student" type="submit">Submit</button>
+    </form>
+
+    <!-- List of existing students -->
+    <h2>Existing Students</h2>
+    <ul class="ul">
+        <% students.forEach(student => { %>
+            <li class="li">
+                <span><%= student.nom %> - <%= student.prenom %></span>
+            </li>
+        <% }); %>
+    </ul>
+</div>
+<div class="container">
+    <h1>Create Student</h1>
+
+    <% if (success) { %>
+        <p class="message success"><%= success %></p>
+    <% } %>
+    <% if (error) { %>
+        <p class="message error"><%= error %></p>
+    <% } %>
+</div>
+>>>>>>> 5a22db5d58ab153ba7d7692808ac7221d49b7d94
 
 <div class="container">
     <h1>Create Class</h1>
