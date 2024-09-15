@@ -1,61 +1,79 @@
 import { QuestionModel } from "../models/QuestionModel.mjs";
 import { promisify } from 'util';
-import {SujetModel} from "../models/SujetModel.mjs";
-import {SousSujetModel} from "../models/SousSujetModel.mjs";
-import {ReponseModel} from "../models/ReponseModel.mjs";
+import { SujetModel } from "../models/SujetModel.mjs";
+import { SousSujetModel } from "../models/SousSujetModel.mjs";
+import { ReponseModel } from "../models/ReponseModel.mjs";
 
-const questionIndex = promisify(QuestionModel.index.bind(QuestionModel))
-const sujetIndex = promisify(SujetModel.index.bind(SujetModel))
-const sousSujetIndex = promisify(SousSujetModel.index.bind(SousSujetModel))
+const questionIndex = promisify(QuestionModel.index.bind(QuestionModel));
+const sujetIndex = promisify(SujetModel.index.bind(SujetModel));
+const sousSujetIndex = promisify(SousSujetModel.index.bind(SousSujetModel));
 
 class QuestionController {
 
-    static async getAllQuestion(req, res){
+    static async getAllQuestion(req, res) {
         const [questionData, sujetData, sousSujetData] = await Promise.all([
             questionIndex(),
             sujetIndex(),
             sousSujetIndex()
-        ])
+        ]);
+
+
         res.status(200).render('../views/formateur/createQuestion', {
             questions: questionData,
             sujet: sujetData,
             soussujet: sousSujetData,
-        })
-    }
-    static async CreateQuestion(req, res) {
-        const questiondata = {
-            texte_question: req.body.texte_question,
-            difficulty: req.body.difficulty,
-            type_question: req.body.type_question,
-            points: req.body.points,
-            sujet_id: req.body.sujet_id,
-            sous_sujet_id: req.body.sous_sujet_id
-        };
-
-        await QuestionModel.create(questiondata, async (err, questionResults) => {
-            if (err) {
-                return res.render('../views/formateur/createQuestion', { error: 'Error creating question' });
-            }
-
-            const question_id = questionResults.insertId;
-            const reponses = req.body.reponses;
-            for (let i = 0; i < reponses.length; i++) {
-                const reponseData = {
-                    texte_reponse: reponses[i].content,
-                    question_id: question_id,
-                    is_correcte: reponses[i].isCorrect ? true : false
-                };
-
-                await ReponseModel.store(reponseData, (err, result) => {
-                    if (err) {
-                        return res.render('../views/formateur/createQuestion', { error: 'Error inserting answers' });
-                    }
-                });
-            }
-
-            res.render('../views/formateur/home', { success: 'Question and answers created successfully' });
         });
     }
+
+    static async CreateQuestion(req, res) {
+        const questions = req.body.questions;
+
+        try {
+            for (const question of questions) {
+                const questionData = {
+                    texte_question: question.texte_question,
+                    difficulty: question.difficulty,
+                    type_question: question.type_question,
+                    points: question.points,
+                    sujet_id: question.sujet_id,
+                    sous_sujet_id: question.sous_sujet_id
+                };
+
+                // Insert question and retrieve the inserted question's ID
+                const questionResults = await new Promise((resolve, reject) => {
+                    QuestionModel.create(questionData, (err, result) => {
+                        if (err) return reject(err);
+                        resolve(result);
+                    });
+                });
+
+                const question_id = questionResults.insertId;
+                const reponses = question.reponses;
+
+                // Insert all responses for the current question
+                await Promise.all(reponses.map(reponse => {
+                    const reponseData = {
+                        texte_reponse: reponse.content,
+                        question_id: question_id,
+                        is_correcte: reponse.isCorrect ? true : false
+                    };
+
+                    return new Promise((resolve, reject) => {
+                        ReponseModel.store(reponseData, (err, result) => {
+                            if (err) return reject(err);
+                            resolve(result);
+                        });
+                    });
+                }));
+            }
+
+            res.render('../views/formateur/createQuestion', { success: 'Questions and responses created successfully' });
+        } catch (err) {
+            console.error("Error creating questions or responses:", err);
+            res.render('../views/formateur/createQuestion', { error: 'Error creating questions or responses' });
+        }
+    }
+
 }
 
 export default QuestionController;

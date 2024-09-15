@@ -1,8 +1,8 @@
 import express from 'express';
-import formateurRoutes from './routes/formateurRoutes.mjs';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import router from "./routes/router.mjs";
 dotenv.config();
 
 const app = express();
@@ -15,6 +15,6 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', formateurRoutes);
+app.use('/', router);
 
 app.listen(PORT);

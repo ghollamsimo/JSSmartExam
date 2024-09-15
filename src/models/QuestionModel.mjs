@@ -42,7 +42,7 @@ export class QuestionModel {
     }
   }
 
-  
+
 
   static async delete(questionId) {
     try {
