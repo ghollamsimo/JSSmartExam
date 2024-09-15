@@ -17,6 +17,7 @@ class QuestionController {
             sousSujetIndex()
         ]);
 
+
         res.status(200).render('../views/formateur/createQuestion', {
             questions: questionData,
             sujet: sujetData,
@@ -38,6 +39,7 @@ class QuestionController {
                     sous_sujet_id: question.sous_sujet_id
                 };
 
+                // Insert question and retrieve the inserted question's ID
                 const questionResults = await new Promise((resolve, reject) => {
                     QuestionModel.create(questionData, (err, result) => {
                         if (err) return reject(err);
@@ -48,7 +50,8 @@ class QuestionController {
                 const question_id = questionResults.insertId;
                 const reponses = question.reponses;
 
-                const reponsePromises = reponses.map(reponse => {
+                // Insert all responses for the current question
+                await Promise.all(reponses.map(reponse => {
                     const reponseData = {
                         texte_reponse: reponse.content,
                         question_id: question_id,
@@ -61,17 +64,16 @@ class QuestionController {
                             resolve(result);
                         });
                     });
-                });
-
-                await Promise.all(reponsePromises);
+                }));
             }
 
-            res.render('../views/formateur/home', { success: 'Questions and responses created successfully' });
+            res.render('../views/formateur/createQuestion', { success: 'Questions and responses created successfully' });
         } catch (err) {
             console.error("Error creating questions or responses:", err);
             res.render('../views/formateur/createQuestion', { error: 'Error creating questions or responses' });
         }
     }
+
 }
 
 export default QuestionController;
