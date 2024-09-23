@@ -8,22 +8,16 @@ const router = express.Router();
 router.get('/classes',  ClassController.getAllClasses)
 router.post('/create/class', ClassController.CreateClass);
 router.post('/delete/class', ClassController.DeleteClass);
-router.get('/', (req, res)=> {
-    res.render('../views/pages/student/home')
-})
 
 router.get('/classes',  ClassController.getAllClasses)
 router.post('/create/class', ClassController.CreateClass);
 router.post('/delete/class', ClassController.DeleteClass);
-router.get('/', (req, res)=> {
-    res.render('../views/pages/student/home')
-})
-router.get('/tests', (req, res)=> {
-    res.render('../views/pages/student/testpage')
-})
+router.get('/', TestController.getAllTest)
+router.get('/tests/:id/questions', TestController.getTestQuestions);
+
 router.get('/questions', QuestionController.getAllQuestion);
 router.post('/questions', QuestionController.CreateQuestion);
-router.get('/test', TestController.getAllTest)
+router.get('/test', TestController.getQuestion)
 router.post('/test', TestController.createTest)
 router.post('/create/student', StudentController.createStudent);
 export default router;

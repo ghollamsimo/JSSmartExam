@@ -6,13 +6,38 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../style/studenthome.css">
+    <link rel="stylesheet" href="../style/test.css">
+
     <title>Document</title>
 </head>
 <body>
 <%- include('../../components/navbar') %>
 <%- include('../../components/hero') %>
 <%- include('../../components/sponsore') %>
-<%- include('../../components/test') %>
+<section>
+    <div class="test-section">
+        <% if (test && test.length > 0) { %>
+            <% test.forEach(item => { %>
+                <div class="brutalist-card">
+                    <div class="brutalist-card__header">
+                        <div class="brutalist-card__icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+                            </svg>
+                        </div>
+                        <div class="brutalist-card__alert"><%= item.titre %></div>
+                    </div>
+                    <div class="brutalist-card__message"></div>
+                    <div class="brutalist-card__actions">
+                        <a class="brutalist-card__button brutalist-card__button--mark" href="/tests/<%= item.test_id %>/questions">Apply</a>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No test data available.</p>
+        <% } %>
+    </div>
+</section>
 
 </body>
 </html>

@@ -9,8 +9,7 @@
     </div>
 </section>
 <script>
-// Select the animation container
-// Select the animation container
+
 const animationContainer = document.querySelector('.sponsor-section .animation');
 
 // Duplicate the content until it's wide enough to fill the viewport more than 5 times
@@ -27,10 +26,8 @@ while (containerWidth < screenWidth * duplicateCount) {
 // Set initial position for the animation
 let position = 0;
 
-// Function to animate the text from right to left
 function animate() {
-    position--; // Move left by 1 pixel
-    // Reset the position when the entire content has scrolled out of view
+    position--;
     if (position <= -containerWidth / 2) {
         position = 0;
     }

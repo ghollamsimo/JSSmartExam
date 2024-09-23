@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../style/test.css">
-    <title>Quiz</title>
+    <link rel="stylesheet" href="/style/test.css">
+    <title>Quiz Test</title>
 </head>
 <body>
 
@@ -13,28 +13,92 @@
     <h1>Score: <span id="score">0</span></h1>
     <div class="container">
         <div class="progress">
-            <div class="percent"></div>
+            <div class="percent" id="progress-bar"></div>
         </div>
-
     </div>
-
 </div>
 
 <div class="question-section">
-    <div class="question">
-        <h1 id="question">ghwa9</h1>
-        <div class="Reponse" id="answer-buttons">
-            <button class="Reponse" type="button" onclick="changeBackgroundColor(this)"></button>
-        </div>
-    </div>
+    <% if (questions && questions.length > 0) { %>
+        <% questions.forEach((question, index) => { %>
+            <div class="question" id="question-<%= index %>" style="display: <%= index === 0 ? 'block' : 'none' %>">
+                <h1>Question <%= index + 1 %>: <%= question.content %></h1>
+                <div class="Reponse">
+                    <% if (question.answers && question.answers.length > 0) { %>
+                        <% question.answers.forEach(answer => { %>
+                            <button class="Reponse-button" type="button" onclick="selectAnswer(this, <%= question.correct_answer_id %>, <%= answer.id %>)">
+                                <%= answer.text %>
+                            </button>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No answers available.</p>
+                    <% } %>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No questions available for this test.</p>
+    <% } %>
 </div>
-
 
 <div class="nextbtn">
-    <button id="next-btn">Next</button>
+    <button id="next-btn" onclick="nextQuestion()">Next</button>
 </div>
 
-<script src="../js/main.js"></script>
+<script>
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function selectAnswer(button, correctAnswerId, selectedAnswerId) {
+        button.style.backgroundColor = '#1e3a8a';
+        button.style.color = '#ffffff';
+
+        disableAnswerButtons();
+
+        if (selectedAnswerId === correctAnswerId) {
+            score++;
+            document.getElementById('score').textContent = score;
+        }
+    }
+
+    function disableAnswerButtons() {
+        const buttons = document.querySelectorAll('.question-section .Reponse-button');
+        buttons.forEach(button => button.disabled = true);
+    }
+
+    function enableAnswerButtons() {
+        const buttons = document.querySelectorAll('.question-section .Reponse-button');
+        buttons.forEach(button => {
+            button.disabled = false;
+            button.style.backgroundColor = '#ffffff';
+            button.style.color = '#1e3a8a';
+        });
+    }
+
+    function nextQuestion() {
+        const currentQuestion = document.getElementById(`question-${currentQuestionIndex}`);
+        const nextQuestion = document.getElementById(`question-${currentQuestionIndex + 1}`);
+
+        if (nextQuestion) {
+            currentQuestion.style.display = 'none';
+            nextQuestion.style.display = 'block';
+            currentQuestionIndex++;
+
+            enableAnswerButtons();
+        } else {
+            alert('Test completed! Your score is: ' + score);
+        }
+
+        updateProgressBar();
+    }
+
+    function updateProgressBar() {
+        const totalQuestions = <%= questions.length %>;
+        const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+        document.getElementById('progress-bar').style.width = progress + '%';
+    }
+</script>
+
 
 </body>
 </html>
